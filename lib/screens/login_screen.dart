@@ -58,6 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
               pushedName: () {},
               color: Colors.lightBlueAccent,
               text: 'Log In',
+              borderAnimation: BorderRadius.circular(30),
             )
           ],
         ),

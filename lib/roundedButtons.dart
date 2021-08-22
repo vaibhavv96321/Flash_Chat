@@ -7,7 +7,7 @@ class Buttons extends StatelessWidget {
   final String text;
   final Function pushedName;
   final Color color;
-  final BorderRadius borderAnimation;
+  final BorderRadiusGeometry borderAnimation;
 
   @override
   Widget build(BuildContext context) {

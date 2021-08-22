@@ -43,7 +43,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     controller.forward();
     controller.addListener(() {
       setState(() {});
-      print(animation.value);
     });
   }
 
@@ -94,17 +93,20 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               height: 48.0,
             ),
             Buttons(
-                text: 'Log In',
-                color: Colors.lightBlueAccent,
-                pushedName: () {
-                  Navigator.pushNamed(context, LoginScreen.id);
-                }),
+              text: 'Log In',
+              color: Colors.lightBlueAccent,
+              pushedName: () {
+                Navigator.pushNamed(context, LoginScreen.id);
+              },
+              borderAnimation: borderanimation.value,
+            ),
             Buttons(
                 text: 'Register',
                 color: Colors.blueAccent,
                 pushedName: () {
                   Navigator.pushNamed(context, RegistrationScreen.id);
-                }),
+                },
+                borderAnimation: borderanimation.value),
           ],
         ),
       ),

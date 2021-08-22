@@ -57,6 +57,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               pushedName: () {},
               color: Colors.blueAccent,
               text: 'Register',
+              borderAnimation: BorderRadius.circular(30),
             ),
           ],
         ),
