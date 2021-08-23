@@ -9,6 +9,15 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  String email;
+  String password;
+  bool obscurity = true;
+  void toggle() {
+    setState(() {
+      obscurity = !obscurity;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,8 +44,10 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 48.0,
             ),
             TextField(
+              textAlign: TextAlign.center,
+              keyboardType: TextInputType.emailAddress,
               onChanged: (value) {
-                //Do something with the user input.
+                email = value;
               },
               style: kFieldstyle,
               decoration: fieldDecoration('Enter your email'),
@@ -45,17 +56,25 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 8.0,
             ),
             TextField(
+              textAlign: TextAlign.center,
+              obscureText: obscurity,
               onChanged: (value) {
-                //Do something with the user input.
+                password = value;
               },
               style: kFieldstyle,
               decoration: fieldDecoration('Enter your password'),
             ),
-            SizedBox(
-              height: 24.0,
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 150, vertical: 10),
+              alignment: Alignment.center,
+              child: GestureDetector(
+                  onTap: toggle, child: Text(obscurity ? "Show" : "Hide")),
             ),
             Buttons(
-              pushedName: () {},
+              pushedName: () {
+                print(email);
+                print(password);
+              },
               color: Colors.lightBlueAccent,
               text: 'Log In',
               borderAnimation: BorderRadius.circular(30),
