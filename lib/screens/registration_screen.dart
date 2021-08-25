@@ -59,7 +59,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
               Container(
                 height: 200.0,
-                child: Hero(tag: 'logo', child: Image.asset('images/logo.png')),
+                child: Flexible(
+                    child: Hero(
+                        tag: 'logo', child: Image.asset('images/logo.png'))),
               ),
               SizedBox(
                 height: 48.0,
