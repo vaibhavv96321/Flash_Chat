@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flash_chat/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,8 +23,6 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
   }
 
-  Stream<QuerySnapshot> _userSnapshot =
-      FirebaseFirestore.instance.collection('messages').snapshots();
   final _auth = FirebaseAuth.instance;
 
   void getCurrentUser() {
@@ -38,13 +37,18 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  void getUpdated() async {
-    await for (var snapshot in _userSnapshot) {
-      for (var message in snapshot.docs) {
-        print(message.data());
-      }
-    }
-  }
+  // Future<void> sendMesssage() async{
+  //   if(textController.text.length>0){
+  //     String msgId = _firestore.collection("messages").document().documentID.toString();
+  //
+  //     await _firestore.collection("messages").document(msgId).setData({
+  //
+  //     "messageTime": DateTime.now() // message DateTime
+  //     });
+  //     textController.clear();
+  //
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +65,7 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
               onPressed: () {
                 _auth.signOut();
-                Navigator.pop(context);
+                Navigator.pushNamed(context, LoginScreen.id);
               }),
         ],
         title: Center(child: Text('⚡️Chat')),
