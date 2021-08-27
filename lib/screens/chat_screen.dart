@@ -37,16 +37,13 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  // Future<void> sendMesssage() async{
-  //   if(textController.text.length>0){
-  //     String msgId = _firestore.collection("messages").document().documentID.toString();
-  //
+  // Future<void> sendMesssage() async {
+  //   if (textController.text.length > 0) {
+  //     String msgId = _firestore.collection("messages").doc('msgId');
   //     await _firestore.collection("messages").document(msgId).setData({
-  //
-  //     "messageTime": DateTime.now() // message DateTime
+  //       "messageTime": DateTime.now() // message DateTime
   //     });
   //     textController.clear();
-  //
   //   }
   // }
 
@@ -94,8 +91,11 @@ class _ChatScreenState extends State<ChatScreen> {
                   TextButton(
                     onPressed: () {
                       textController.clear();
-                      _firestore.collection('messages').add(
-                          {'text': textMessage, 'sender': loggedInUser.email});
+                      _firestore.collection('messages').add({
+                        'text': textMessage,
+                        'sender': loggedInUser.email,
+                        'timeStamp': DateTime.now(),
+                      });
                     },
                     child: Text(
                       'Send',
@@ -116,7 +116,8 @@ class BubbleStream extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection('messages').snapshots(),
+      stream:
+          _firestore.collection('messages').orderBy('timeStamp').snapshots(),
       builder: (context, snapshot) {
         List<Bubble> messageWidgets = [];
         if (!snapshot.hasData) {
@@ -150,11 +151,12 @@ class BubbleStream extends StatelessWidget {
 }
 
 class Bubble extends StatelessWidget {
-  Bubble({this.text, this.sender, this.isMe});
+  Bubble({this.text, this.sender, this.isMe, this.time});
 
   final String sender;
   final String text;
   final bool isMe;
+  final DateTime time;
 
   @override
   Widget build(BuildContext context) {
