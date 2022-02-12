@@ -131,9 +131,11 @@ class BubbleStream extends StatelessWidget {
         for (var message in messages) {
           final textSender = message.get('sender');
           final textMessage = message.get('text');
+          final userTime = message.get('timeStamp');
           final currentUser = loggedInUser.email;
           final messageWidget = Bubble(
             text: textMessage,
+            time: userTime,
             sender: textSender,
             isMe: currentUser == textSender,
           );
@@ -156,7 +158,7 @@ class Bubble extends StatelessWidget {
   final String sender;
   final String text;
   final bool isMe;
-  final DateTime time;
+  final Timestamp time;
 
   @override
   Widget build(BuildContext context) {

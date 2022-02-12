@@ -45,117 +45,107 @@ class _LoginScreenState extends State<LoginScreen> {
       body: InteractiveViewer(
         child: ModalProgressHUD(
           inAsyncCall: loading,
-          child: GestureDetector(
-            onTap: () {
-              setState(() {
-                loading = false;
-              });
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.0),
-              child: ListView(
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 100,
-                      ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: TextButton(
-                            child: Icon(Icons.arrow_back_ios),
-                            onPressed: () {
-                              Navigator.pushNamed(context, WelcomeScreen.id);
-                            }),
-                      ),
-                      Center(
-                        child: Text(
-                          'LOG IN',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24.0),
+            child: ListView(
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 100,
+                    ),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: TextButton(
+                          child: Icon(Icons.arrow_back_ios),
+                          onPressed: () {
+                            Navigator.pushNamed(context, WelcomeScreen.id);
+                          }),
+                    ),
+                    Center(
+                      child: Text(
+                        'LOG IN',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Container(
-                        height: 200.0,
-                        child: Flexible(
-                            child: Hero(
-                                tag: 'logo',
-                                child: Image.asset('images/logo.png'))),
-                      ),
-                      SizedBox(
-                        height: 40.0,
-                      ),
-                      TextField(
-                        textAlign: TextAlign.center,
-                        keyboardType: TextInputType.emailAddress,
-                        onChanged: (value) {
-                          email = value;
-                        },
-                        style: kFieldstyle,
-                        decoration: fieldDecoration('Enter your email'),
-                      ),
-                      SizedBox(
-                        height: 8.0,
-                      ),
-                      TextField(
-                        textAlign: TextAlign.center,
-                        obscureText: obscurity,
-                        onChanged: (value) {
-                          password = value;
-                        },
-                        style: kFieldstyle,
-                        decoration: fieldDecoration('Enter your password'),
-                      ),
-                      Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 150, vertical: 10),
-                        alignment: Alignment.center,
-                        child: GestureDetector(
-                            onTap: toggle,
-                            child: Text(obscurity ? "Show" : "Hide")),
-                      ),
-                      Buttons(
-                        pushedName: () async {
-                          setState(() {
-                            loading = true;
-                          });
-                          try {
-                            final user = await _auth.signInWithEmailAndPassword(
-                                email: email, password: password);
-                            if (user != null) {
-                              Navigator.pushNamed(context, ChatScreen.id);
-                            }
-                            setState(() {
-                              loading = false;
-                            });
-                          } catch (e) {
-                            setState(() {
-                              loading = false;
-                            });
-                            print(e);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Invalid Email or Password'),
-                                duration: Duration(seconds: 2),
-                              ),
-                            );
+                    ),
+                    Container(
+                      height: 200.0,
+                      child: Flexible(
+                          child: Hero(
+                              tag: 'logo',
+                              child: Image.asset('images/logo.png'))),
+                    ),
+                    SizedBox(
+                      height: 40.0,
+                    ),
+                    TextField(
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.emailAddress,
+                      onChanged: (value) {
+                        email = value;
+                      },
+                      style: kFieldstyle,
+                      decoration: fieldDecoration('Enter your email'),
+                    ),
+                    SizedBox(
+                      height: 8.0,
+                    ),
+                    TextField(
+                      textAlign: TextAlign.center,
+                      obscureText: obscurity,
+                      onChanged: (value) {
+                        password = value;
+                      },
+                      style: kFieldstyle,
+                      decoration: fieldDecoration('Enter your password'),
+                    ),
+                    Container(
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 150, vertical: 10),
+                      alignment: Alignment.center,
+                      child: GestureDetector(
+                          onTap: toggle,
+                          child: Text(obscurity ? "Show" : "Hide")),
+                    ),
+                    Buttons(
+                      pushedName: () async {
+                        setState(() {
+                          loading = true;
+                        });
+                        try {
+                          final user = await _auth.signInWithEmailAndPassword(
+                              email: email, password: password);
+                          if (user != null) {
+                            Navigator.pushNamed(context, ChatScreen.id);
                           }
-                        },
-                        color: Colors.lightBlueAccent,
-                        text: 'Log In',
-                        borderAnimation: BorderRadius.circular(30),
-                      ),
-                      SizedBox(
-                        height: 100,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                          setState(() {
+                            loading = false;
+                          });
+                        } catch (e) {
+                          print(e);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Invalid Email or Password'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
+                      },
+                      color: Colors.lightBlueAccent,
+                      text: 'Log In',
+                      borderAnimation: BorderRadius.circular(30),
+                    ),
+                    SizedBox(
+                      height: 100,
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
