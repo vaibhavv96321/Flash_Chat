@@ -1,4 +1,4 @@
-import 'package:flash_chat/screens/home_page.dart';
+import 'package:flash_chat/screens/g_home_page.dart';
 import 'package:flash_chat/screens/login_screen.dart';
 import 'package:flash_chat/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +57,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     controller.addListener(() {
       setState(() {});
     });
+
     isSingedIn();
   }
 
@@ -73,11 +74,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  HomePage(currentUserId: preferences.getString("id"))));
-      setState(() {
-        isLoading = false;
-      });
+                  HomePage(currentUserId: preferences.getString("users"))));
     }
+    this.setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -188,14 +189,14 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     //SignIn Success
     if (firebaseUser != null) {
       final QuerySnapshot resultQuery = await FirebaseFirestore.instance
-          .collection('messages')
+          .collection('users')
           .where('sender', isEqualTo: firebaseUser.uid)
           .get();
       final List<DocumentSnapshot> documentSnapshot = resultQuery.docs;
       if (documentSnapshot.length == 0) {
         //that the user is new and we have to store the information
         FirebaseFirestore.instance
-            .collection("messages")
+            .collection("users")
             .doc(firebaseUser.uid)
             .set({
           "nickname": firebaseUser.displayName,
@@ -233,7 +234,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     currentUserId: firebaseUser.uid,
                   )));
     }
-    //Sign Failed
+    //SignIn Failed
     else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('SignIn Failed! Try Again.'),
