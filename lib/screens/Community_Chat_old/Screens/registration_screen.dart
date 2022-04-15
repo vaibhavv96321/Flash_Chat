@@ -1,25 +1,24 @@
-import 'package:flash_chat/constants.dart';
-import 'package:flash_chat/screens/chat_screen.dart';
-import 'package:flash_chat/screens/welcome_screen.dart';
+import 'package:flash_chat/screens/Common/additional/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flash_chat/roundedButtons.dart';
+import 'package:flash_chat/screens/Community_Chat_old/additional/roundedButtons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'chat_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import '../../Common/screens/welcome_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  static String id = 'login_screen';
+class RegistrationScreen extends StatefulWidget {
+  static String id = 'registration_screen';
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _RegistrationScreenState createState() => _RegistrationScreenState();
 }
 
-bool loading = false;
-
-class _LoginScreenState extends State<LoginScreen> {
+class _RegistrationScreenState extends State<RegistrationScreen> {
+  bool loading = false;
   FirebaseAuth _auth;
-
   void start() async {
-    await Firebase.initializeApp();
+    await Firebase
+        .initializeApp(); // we have to use this command to access the FireBase
     _auth = FirebaseAuth.instance;
   }
 
@@ -34,14 +33,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    start();
     super.initState();
+    start();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: whiteColor,
       body: InteractiveViewer(
         child: ModalProgressHUD(
           inAsyncCall: loading,
@@ -66,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Center(
                       child: Text(
-                        'LOG IN',
+                        'REGISTER',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -76,6 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Container(
                       height: 200.0,
                       child: Flexible(
+                          fit: FlexFit.loose,
                           child: Hero(
                               tag: 'logo',
                               child: Image.asset('images/logo.png'))),
@@ -84,24 +84,21 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 40.0,
                     ),
                     TextField(
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.emailAddress,
-                      onChanged: (value) {
-                        email = value;
-                      },
-                      style: kFieldstyle,
-                      decoration: fieldDecoration('Enter your email'),
-                    ),
+                        keyboardType: TextInputType.emailAddress,
+                        textAlign: TextAlign.center,
+                        onChanged: (value) {
+                          email = value;
+                        },
+                        decoration: fieldDecoration('Enter your email')),
                     SizedBox(
                       height: 8.0,
                     ),
                     TextField(
-                      textAlign: TextAlign.center,
                       obscureText: obscurity,
+                      textAlign: TextAlign.center,
                       onChanged: (value) {
                         password = value;
                       },
-                      style: kFieldstyle,
                       decoration: fieldDecoration('Enter your password'),
                     ),
                     Container(
@@ -118,8 +115,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           loading = true;
                         });
                         try {
-                          final user = await _auth.signInWithEmailAndPassword(
-                              email: email, password: password);
+                          final user =
+                              await _auth.createUserWithEmailAndPassword(
+                                  email: email, password: password);
                           if (user != null) {
                             Navigator.pushNamed(context, ChatScreen.id);
                           }
@@ -128,23 +126,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           });
                         } catch (e) {
                           print(e);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Invalid Email or Password'),
-                              duration: Duration(seconds: 2),
-                            ),
-                          );
-                          setState(() {
-                            loading = false;
-                          });
                         }
                       },
-                      color: Colors.lightBlueAccent,
-                      text: 'Log In',
+                      color: Colors.blueAccent,
+                      text: 'Register',
                       borderAnimation: BorderRadius.circular(30),
-                    ),
-                    SizedBox(
-                      height: 100,
                     ),
                   ],
                 ),

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flash_chat/screens/login_screen.dart';
+import 'package:flash_chat/screens/Community_Chat_old/Screens/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flash_chat/constants.dart';
+import 'package:flash_chat/screens/Common/additional/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 final _firestore = FirebaseFirestore.instance;
@@ -57,7 +57,7 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Text(
                 'Log Out',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: whiteColor,
                 ),
               ),
               onPressed: () {
@@ -66,7 +66,7 @@ class _ChatScreenState extends State<ChatScreen> {
               }),
         ],
         title: Center(child: Text('⚡️Chat')),
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: lightBLueColor,
       ),
       body: SafeArea(
         child: Column(
@@ -123,7 +123,7 @@ class BubbleStream extends StatelessWidget {
         if (!snapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(
-              backgroundColor: Colors.lightBlueAccent,
+              backgroundColor: lightBLueColor,
             ),
           );
         }
@@ -188,14 +188,14 @@ class Bubble extends StatelessWidget {
                     bottomRight: Radius.circular(30),
                   ),
             elevation: 5,
-            color: isMe ? Colors.white : Colors.lightBlueAccent,
+            color: isMe ? whiteColor : lightBLueColor,
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
               child: Text(
                 '$text',
                 style: TextStyle(
                   fontSize: 17,
-                  color: isMe ? Colors.black54 : Colors.white,
+                  color: isMe ? Colors.black54 : whiteColor,
                 ),
               ),
             ),

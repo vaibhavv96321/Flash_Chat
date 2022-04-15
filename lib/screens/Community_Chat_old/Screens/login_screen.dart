@@ -1,25 +1,25 @@
-import 'package:flash_chat/constants.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flash_chat/screens/Common/additional/constants.dart';
+import 'package:flash_chat/screens/Community_Chat_old/Screens/chat_screen.dart';
+import 'package:flash_chat/screens/Common/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flash_chat/roundedButtons.dart';
+import 'package:flash_chat/screens/Community_Chat_old/additional/roundedButtons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'chat_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'welcome_screen.dart';
 
-class RegistrationScreen extends StatefulWidget {
-  static String id = 'registration_screen';
+class LoginScreen extends StatefulWidget {
+  static String id = 'login_screen';
   @override
-  _RegistrationScreenState createState() => _RegistrationScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
-  bool loading = false;
+bool loading = false;
+
+class _LoginScreenState extends State<LoginScreen> {
   FirebaseAuth _auth;
+
   void start() async {
-    await Firebase
-        .initializeApp(); // we have to use this command to access the FireBase
+    await Firebase.initializeApp();
     _auth = FirebaseAuth.instance;
   }
 
@@ -34,14 +34,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   void initState() {
-    super.initState();
     start();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: whiteColor,
       body: InteractiveViewer(
         child: ModalProgressHUD(
           inAsyncCall: loading,
@@ -66,7 +66,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ),
                     Center(
                       child: Text(
-                        'REGISTER',
+                        'LOG IN',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -76,7 +76,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     Container(
                       height: 200.0,
                       child: Flexible(
-                          fit: FlexFit.loose,
                           child: Hero(
                               tag: 'logo',
                               child: Image.asset('images/logo.png'))),
@@ -85,21 +84,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       height: 40.0,
                     ),
                     TextField(
-                        keyboardType: TextInputType.emailAddress,
-                        textAlign: TextAlign.center,
-                        onChanged: (value) {
-                          email = value;
-                        },
-                        decoration: fieldDecoration('Enter your email')),
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.emailAddress,
+                      onChanged: (value) {
+                        email = value;
+                      },
+                      style: kFieldstyle,
+                      decoration: fieldDecoration('Enter your email'),
+                    ),
                     SizedBox(
                       height: 8.0,
                     ),
                     TextField(
-                      obscureText: obscurity,
                       textAlign: TextAlign.center,
+                      obscureText: obscurity,
                       onChanged: (value) {
                         password = value;
                       },
+                      style: kFieldstyle,
                       decoration: fieldDecoration('Enter your password'),
                     ),
                     Container(
@@ -116,9 +118,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           loading = true;
                         });
                         try {
-                          final user =
-                              await _auth.createUserWithEmailAndPassword(
-                                  email: email, password: password);
+                          final user = await _auth.signInWithEmailAndPassword(
+                              email: email, password: password);
                           if (user != null) {
                             Navigator.pushNamed(context, ChatScreen.id);
                           }
@@ -127,11 +128,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           });
                         } catch (e) {
                           print(e);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Invalid Email or Password'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                          setState(() {
+                            loading = false;
+                          });
                         }
                       },
-                      color: Colors.blueAccent,
-                      text: 'Register',
+                      color: lightBLueColor,
+                      text: 'Log In',
                       borderAnimation: BorderRadius.circular(30),
+                    ),
+                    SizedBox(
+                      height: 100,
                     ),
                   ],
                 ),

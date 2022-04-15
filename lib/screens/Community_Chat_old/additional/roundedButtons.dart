@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../Common/additional/constants.dart';
+
 class Buttons extends StatelessWidget {
   Buttons(
       {this.text, this.color, @required this.pushedName, this.borderAnimation});
@@ -24,7 +26,7 @@ class Buttons extends StatelessWidget {
           child: Text(
             text,
             style: TextStyle(
-              color: Colors.white,
+              color: whiteColor,
             ),
           ),
         ),

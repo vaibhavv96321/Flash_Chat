@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 const kSendButtonTextStyle = TextStyle(
-  color: Colors.lightBlueAccent,
+  color: lightBLueColor,
   fontWeight: FontWeight.bold,
   fontSize: 18.0,
 );
 
+const lightBLueColor = Colors.lightBlueAccent;
+const whiteColor = Colors.white;
 const kMessageTextFieldDecoration = InputDecoration(
   contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
   hintText: 'Type your message here...',
@@ -14,7 +16,7 @@ const kMessageTextFieldDecoration = InputDecoration(
 
 const kMessageContainerDecoration = BoxDecoration(
   border: Border(
-    top: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
+    top: BorderSide(color: lightBLueColor, width: 2.0),
   ),
 );
 
@@ -32,12 +34,28 @@ InputDecoration fieldDecoration(String fillText) {
       borderRadius: BorderRadius.all(Radius.circular(32.0)),
     ),
     enabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
+      borderSide: BorderSide(color: lightBLueColor, width: 1.0),
       borderRadius: BorderRadius.all(Radius.circular(32.0)),
     ),
     focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+      borderSide: BorderSide(color: lightBLueColor, width: 2.0),
       borderRadius: BorderRadius.all(Radius.circular(32.0)),
     ),
   );
+}
+
+class FirebaseConstants {
+  static const pathUserCollection = "users";
+  static const pathMessageCollection = "messages";
+  static const nickname = 'nickname';
+  static const aboutMe = 'aboutMe';
+  static const photoUrl = 'photoUrl';
+  static const phoneNumber = 'phoneNumber';
+  static const id = 'id';
+  static const chattingFrom = 'chattingFrom';
+  static const idFrom = 'idFrom';
+  static const idTo = 'idTo';
+  static const timeStamp = 'timeStamp';
+  static const content = 'content';
+  static const type = 'type';
 }
