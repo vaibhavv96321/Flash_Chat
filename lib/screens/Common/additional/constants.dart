@@ -53,6 +53,7 @@ class FirebaseConstants {
   static const phoneNumber = 'phoneNumber';
   static const id = 'id';
   static const chattingFrom = 'chattingFrom';
+  static const chattingWith = 'chattingWith';
   static const idFrom = 'idFrom';
   static const idTo = 'idTo';
   static const timeStamp = 'timeStamp';
