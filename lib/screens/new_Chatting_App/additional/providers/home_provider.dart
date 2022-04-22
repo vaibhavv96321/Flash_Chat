@@ -24,7 +24,8 @@ class HomeProvider {
       return firebaseFirestore
           .collection(pathCollection)
           .limit(limit)
-          .where(FirebaseConstants.nickname, isEqualTo: textSearch);
+          .where(FirebaseConstants.nickname, isEqualTo: textSearch)
+          .snapshots();
     } else {
       return firebaseFirestore
           .collection(pathCollection)

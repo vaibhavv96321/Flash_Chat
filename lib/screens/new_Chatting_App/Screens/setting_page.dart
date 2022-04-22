@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flash_chat/screens/Common/additional/constants.dart';
 import 'package:flash_chat/screens/new_Chatting_App/additional/providers/settings_provider.dart';
 import 'package:flash_chat/screens/new_Chatting_App/additional/user_chat.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -66,14 +67,15 @@ class _SettingPageState extends State<SettingPage> {
 
   void readDataFromLocal() async {
     prefrences = await SharedPreferences.getInstance();
+    print('${prefrences.getString(FirebaseConstants.photoUrl)} hello world');
     setState(() {
       id = prefrences.getString(FirebaseConstants.id);
       nickname = prefrences.getString(FirebaseConstants.nickname);
       aboutMe = prefrences.getString(FirebaseConstants.aboutMe);
-      photoUrl = prefrences.getString(photoUrl);
+      photoUrl = prefrences.getString(FirebaseConstants.photoUrl);
       phoneNumber = prefrences.getString(FirebaseConstants.phoneNumber);
     });
-
+    print(photoUrl);
     nicknameTextEditingController = TextEditingController(text: nickname);
     aboutMeTextEditingController = TextEditingController(text: aboutMe);
   }
@@ -182,68 +184,74 @@ class _SettingPageState extends State<SettingPage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                  child: Center(
-                    child: Stack(
-                      children: <Widget>[
-                        (imageFileAvatar == null)
-                            ? photoUrl != null
-                                ? Material(
-                                    child: CachedNetworkImage(
-                                      placeholder: (context, url) => Container(
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                                  lightBLueColor),
-                                        ),
-                                        width: 200,
-                                        height: 200,
-                                        padding: EdgeInsets.all(20),
-                                      ),
-                                      imageUrl: photoUrl,
-                                      width: 200,
-                                      height: 200,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(125)),
-                                    clipBehavior: Clip.hardEdge,
-                                  )
-                                : Icon(
-                                    Icons.account_circle,
-                                    size: 60,
-                                    color: Colors.grey,
-                                  )
-                            : Material(
-                                child: Image.file(
-                                  imageFileAvatar,
-                                  width: 200,
-                                  height: 200,
+                CupertinoButton(
+                  onPressed: getImage,
+                  child: Container(
+                    margin: EdgeInsets.all(20),
+                    child: imageFileAvatar == null
+                        ? photoUrl != null
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(75),
+                                child: Image.network(
+                                  photoUrl,
                                   fit: BoxFit.cover,
+                                  width: 120,
+                                  height: 120,
+                                  errorBuilder: (context, object, stackTrace) {
+                                    print(
+                                        'error occur in getting the photoUrl');
+                                    return Icon(
+                                      Icons.account_circle,
+                                      size: 120,
+                                      color: Colors.grey,
+                                    );
+                                  },
+                                  loadingBuilder: (BuildContext context,
+                                      Widget child,
+                                      ImageChunkEvent loadingProgress) {
+                                    print('loading Builder implemented');
+                                    if (loadingProgress == null) return child;
+                                    return Container(
+                                      width: 120,
+                                      height: 120,
+                                      child: Center(
+                                        child: CircularProgressIndicator(
+                                          color: Colors.grey,
+                                          value: loadingProgress
+                                                          .expectedTotalBytes !=
+                                                      null &&
+                                                  loadingProgress
+                                                          .expectedTotalBytes !=
+                                                      null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes
+                                              : null,
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(125)),
-                                clipBehavior: Clip.hardEdge,
-                              ),
-                        IconButton(
-                            onPressed: getImage,
-                            icon: Icon(
-                              Icons.camera_alt,
-                              size: 100,
-                              color: Colors.white54.withOpacity(0.2),
-                            ))
-                      ],
-                    ),
+                              )
+                            : Icon(
+                                Icons.image,
+                                size: 120,
+                                color: Colors.grey,
+                              )
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(45),
+                            child: Image.file(
+                              imageFileAvatar,
+                              width: 120,
+                              height: 120,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                   ),
                 ),
                 Column(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.all(1.0),
-                      child:
-                          isLoading ? CircularProgressIndicator() : Container(),
-                    ),
                     SettingDetails(
                         focusNode: nicknameFocusNode,
                         textEditingController: nicknameTextEditingController,
@@ -300,10 +308,10 @@ class _SettingPageState extends State<SettingPage> {
                               dialCodeDigits = country.dialCode;
                             });
                           },
-                          initialSelection: "IT",
+                          initialSelection: "+91",
                           showCountryOnly: false,
                           showOnlyCountryWhenClosed: false,
-                          favorite: ["+91", "IND", "+1", "US"],
+                          favorite: ["+91", "IND"],
                         ),
                       ),
                     ),

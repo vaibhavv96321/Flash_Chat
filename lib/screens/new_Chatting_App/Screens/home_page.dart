@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
 
   int _limit = 20;
   int _limitIncrement = 20;
-  String _textSearch = "";
+  String textSearch = "";
   bool isLoading = false;
 
   String currentUserId;
@@ -249,9 +249,7 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                     child: StreamBuilder<QuerySnapshot>(
                   stream: homeProvider.getStreamFirestore(
-                      FirebaseConstants.pathUserCollection,
-                      _limit,
-                      _textSearch),
+                      FirebaseConstants.pathUserCollection, _limit, textSearch),
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (snapshot.hasData) {
@@ -305,19 +303,19 @@ class _HomePageState extends State<HomePage> {
             width: 5,
           ),
           Expanded(
-              child: TextFormField(
+              child: TextField(
             textInputAction: TextInputAction.search,
             controller: searchEditingConroller,
             onChanged: (value) {
-              if (value.isNotEmpty) {
+              if (value != null) {
                 btnClearController.add(true);
                 setState(() {
-                  _textSearch = value;
+                  textSearch = value;
                 });
               } else {
                 btnClearController.add(false);
                 setState(() {
-                  _textSearch = "";
+                  textSearch = value;
                 });
               }
             },
@@ -335,7 +333,7 @@ class _HomePageState extends State<HomePage> {
                           searchEditingConroller.clear();
                           btnClearController.add(false);
                           setState(() {
-                            _textSearch = "";
+                            textSearch = "";
                           });
                         },
                         child: Icon(

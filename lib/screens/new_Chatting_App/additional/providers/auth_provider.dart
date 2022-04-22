@@ -37,7 +37,7 @@ class AuthProvider extends ChangeNotifier {
     preferences = await SharedPreferences.getInstance();
     bool isLoggedIn = await googleSignIn.isSignedIn();
     if (isLoggedIn &&
-        preferences.getString(FirebaseConstants.id)?.isNotEmpty == true) {
+        preferences.getString(FirebaseConstants.id).isNotEmpty == true) {
       // this means that the user is logged in and we also have the id of the user then it will return true
       return true;
     } else {
