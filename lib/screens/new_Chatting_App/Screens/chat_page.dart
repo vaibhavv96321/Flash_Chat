@@ -270,25 +270,53 @@ class ChatPageState extends State<ChatPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              StickerImplementation(stickerName: 'mimi1'),
-              StickerImplementation(stickerName: 'mimi2'),
-              StickerImplementation(stickerName: 'mimi3'),
+              StickerImplementation(
+                stickerTouchFunction: () =>
+                    onSendMessage('mimi1', TypeMessage.sticker),
+                stickerName: 'mimi1',
+              ),
+              StickerImplementation(
+                  stickerTouchFunction: () =>
+                      onSendMessage('mimi2', TypeMessage.sticker),
+                  stickerName: 'mimi2'),
+              StickerImplementation(
+                  stickerTouchFunction: () =>
+                      onSendMessage('mimi3', TypeMessage.sticker),
+                  stickerName: 'mimi3'),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              StickerImplementation(stickerName: 'mimi4'),
-              StickerImplementation(stickerName: 'mimi5'),
-              StickerImplementation(stickerName: 'mimi6'),
+              StickerImplementation(
+                  stickerTouchFunction: () =>
+                      onSendMessage('mimi4', TypeMessage.sticker),
+                  stickerName: 'mimi4'),
+              StickerImplementation(
+                  stickerTouchFunction: () =>
+                      onSendMessage('mimi5', TypeMessage.sticker),
+                  stickerName: 'mimi5'),
+              StickerImplementation(
+                  stickerTouchFunction: () =>
+                      onSendMessage('mimi6', TypeMessage.sticker),
+                  stickerName: 'mimi6'),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              StickerImplementation(stickerName: 'mimi7'),
-              StickerImplementation(stickerName: 'mimi8'),
-              StickerImplementation(stickerName: 'mimi9'),
+              StickerImplementation(
+                  stickerTouchFunction: () =>
+                      onSendMessage('mimi7', TypeMessage.sticker),
+                  stickerName: 'mimi7'),
+              StickerImplementation(
+                  stickerTouchFunction: () =>
+                      onSendMessage('mimi8', TypeMessage.sticker),
+                  stickerName: 'mimi8'),
+              StickerImplementation(
+                  stickerTouchFunction: () =>
+                      onSendMessage('mimi9', TypeMessage.sticker),
+                  stickerName: 'mimi9'),
             ],
           )
         ],
@@ -677,14 +705,15 @@ class ChatPageState extends State<ChatPage> {
 }
 
 class StickerImplementation extends StatelessWidget {
+  Function stickerTouchFunction;
   String stickerName;
 
-  StickerImplementation({@required this.stickerName});
+  StickerImplementation(
+      {@required this.stickerTouchFunction, @required this.stickerName});
 
   Widget build(BuildContext context) {
     return TextButton(
-        onPressed: () =>
-            ChatPageState().onSendMessage(stickerName, TypeMessage.sticker),
+        onPressed: stickerTouchFunction,
         child: Image.asset(
           'images/$stickerName.gif',
           width: 50,
