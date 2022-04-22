@@ -78,7 +78,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           fit: FlexFit.loose,
                           child: Hero(
                               tag: 'logo',
-                              child: Image.asset('images/logo.png'))),
+                              child: Image.asset('images/app_icon.png'))),
                     ),
                     SizedBox(
                       height: 40.0,

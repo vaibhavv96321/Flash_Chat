@@ -99,7 +99,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                           onTap: () {
                             Navigator.pushNamed(context, RegistrationScreen.id);
                           },
-                          child: Image.asset('images/logo.png')),
+                          child: Image.asset('images/app_icon.png')),
                       height: 60,
                     ),
                   ),

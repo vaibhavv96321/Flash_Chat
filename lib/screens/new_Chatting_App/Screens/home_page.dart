@@ -7,6 +7,8 @@ import 'package:flash_chat/main.dart';
 import 'package:flash_chat/screens/new_Chatting_App/additional/providers/auth_provider.dart';
 import 'package:flash_chat/screens/new_Chatting_App/additional/user_chat.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../additional/popUp__debouncer.dart';
 import '../../Common/screens/welcome_screen.dart';
@@ -15,6 +17,7 @@ import '../additional/providers/home_provider.dart';
 import '../additional/utilities.dart';
 import 'chat_page.dart';
 import 'setting_page.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class HomePage extends StatefulWidget {
   final String currentUserId;
@@ -27,6 +30,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
   final ScrollController listScrollController = ScrollController();
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -211,7 +217,54 @@ class _HomePageState extends State<HomePage> {
       Navigator.of(context).pushNamedAndRemoveUntil(
           WelcomeScreen.id, (Route<dynamic> route) => false);
     }
+    registerNotification();
+    configreLocalNotification();
     listScrollController.addListener(scrollListener);
+  }
+
+  void registerNotification() {
+    firebaseMessaging.requestPermission();
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      if (message.notification != null) {
+        showNotification(message.notification);
+      }
+      return;
+    });
+    firebaseMessaging.getToken().then((token) {
+      if (token != null) {
+        homeProvider.updateDataFirestore(FirebaseConstants.pathUserCollection,
+            currentUserId, {'pushToken': token});
+      }
+    }).catchError((error) {
+      Fluttertoast.showToast(msg: error.message.toString());
+    });
+  }
+
+  void configreLocalNotification() {
+    AndroidInitializationSettings initializationAndroidSettings =
+        AndroidInitializationSettings("app_icon");
+    IOSInitializationSettings initializationIOSSettings =
+        IOSInitializationSettings();
+    InitializationSettings initializationSettings = InitializationSettings(
+        android: initializationAndroidSettings, iOS: initializationIOSSettings);
+
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  void showNotification(RemoteNotification remoteNotification) async {
+    AndroidNotificationDetails androidNotificationDetails =
+        AndroidNotificationDetails("co.vaibhavv96321.flash_chat", "flash_chat",
+            playSound: true,
+            enableVibration: true,
+            importance: Importance.max,
+            priority: Priority.high);
+    IOSNotificationDetails iosNotificationDetails = IOSNotificationDetails();
+    NotificationDetails notificationDetails = NotificationDetails(
+        android: androidNotificationDetails, iOS: iosNotificationDetails);
+    await flutterLocalNotificationsPlugin.show(0, remoteNotification.title,
+        remoteNotification.body, notificationDetails,
+        payload: null);
   }
 
   @override
